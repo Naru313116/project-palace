@@ -19,10 +19,11 @@ import java.util.Optional;
 public class UserJpaController {
 
     private final UserRepository repository;
+    private final PostRepository postRepository;
 
-    public UserJpaController(UserRepository repository) {
+    public UserJpaController(UserRepository repository, PostRepository postRepository) {
         this.repository = repository;
-
+        this.postRepository = postRepository;
     }
 
     @GetMapping("/jpa/users")
@@ -74,4 +75,26 @@ public class UserJpaController {
 
         return user.get().getPosts();
     }
+
+    @PostMapping("/jpa/users/{id}/posts")
+    public ResponseEntity<Object> createPostsForUser(@PathVariable Integer id, @Valid @RequestBody Post post) {
+        Optional<User> user = repository.findById(id);
+
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("id: " + id);
+        }
+
+        post.setUser(user.get());
+
+        Post savedPost = postRepository.save(post);
+
+        URI location =
+                ServletUriComponentsBuilder.fromCurrentRequest()
+                        .path("/{id}")
+                        .buildAndExpand(savedPost.getId())
+                        .toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+    //TODO RestAPI for GET posts/{id}
 }
