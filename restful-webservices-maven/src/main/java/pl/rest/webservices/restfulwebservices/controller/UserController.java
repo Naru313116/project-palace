@@ -60,4 +60,6 @@ public class UserController {
     public void deleteUser(@PathVariable Integer id) {
         userDaoService.deleteById(id);
     }
+
+
 }
