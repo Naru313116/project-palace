@@ -8,6 +8,7 @@ import pl.rest.webservices.restfulwebservices.exception.UserNotFoundException;
 import pl.rest.webservices.restfulwebservices.exception.UserPostNotFoundException;
 import pl.rest.webservices.restfulwebservices.model.Post;
 import pl.rest.webservices.restfulwebservices.model.User;
+import pl.rest.webservices.restfulwebservices.repository.PostRepository;
 import pl.rest.webservices.restfulwebservices.repository.UserRepository;
 
 import java.net.URI;
